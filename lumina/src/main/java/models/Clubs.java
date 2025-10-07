@@ -1,62 +1,44 @@
 package models;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
+import java.util.List;
 import java.util.UUID;
-
+@Getter
+@Setter
 @Entity
 @Table(name = "Clubs")
 public class Clubs {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(nullable = false,updatable = false,columnDefinition = "unique identifier")
+    @Column(name = "id", nullable = false,updatable = false)
     private UUID id;
 
-    @Column(nullable = false,length = 50)
+    @Column(name = "name", nullable = false,length = 50)
     private String name;
 
-    @Column(nullable = false)
+    @Column(name = "capacity", nullable = false)
     private int capacity;
 
-    @Column(nullable = false)
+    @Column(name = "count", nullable = false)
     private int count;
 
     @Lob
-    @Column(nullable = false)
+    @Column(name = "schedule", nullable = false)
     private String schedule;
 
-    @Column(nullable = false,length = 50)
+    @Column(name = "town", nullable = false,length = 50)
     private String town;
 
-    @Column(nullable = false,length = 255)
+    @Column(name = "address", nullable = false,length = 255)
     private String address;
 
     @ManyToOne
     @JoinColumn(name = "artist_id",nullable = false)
     private Artists artist;
-
-    public UUID getId() { return id; }
-    public void setId(UUID id) { this.id = id; }
-
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
-
-    public int getCapacity() { return capacity; }
-    public void setCapacity(int capacity) { this.capacity = capacity; }
-
-    public int getCount() { return count; }
-    public void setCount(int count) { this.count = count; }
-
-    public String getSchedule() { return schedule; }
-    public void setSchedule(String schedule) { this.schedule = schedule; }
-
-    public String getTown() { return town; }
-    public void setTown(String town) { this.town = town; }
-
-    public String getAddress() { return address; }
-    public void setAddress(String address) { this.address = address; }
-
-    public Artists getArtist() { return artist; }
-    public void setArtist(Artists artist) { this.artist = artist; }
-
+    @OneToMany
+    @JoinColumn(name = "club_id",nullable = false)
+    private List<Reservations> reservationsList;
 
 }

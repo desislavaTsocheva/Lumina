@@ -1,42 +1,35 @@
 package models;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
+import java.util.List;
 import java.util.UUID;
 
+@Setter
+@Getter
 @Entity
 @Table(name = "Artists")
 public class Artists {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(columnDefinition="unique identifier",updatable=false,nullable=false)
+    @Column(name = "id",updatable=false,nullable=false)
     private UUID id;
 
-    @Column(nullable = false,length = 50)
+    @Column(name = "name", nullable = false,length = 50)
     private String name;
 
     @Column(nullable = false, name = "price_per_client")
     private float pricePerClient;
 
-    @Column(nullable = false,length = 50)
+    @Column(name = "genre", nullable = false,length = 50)
     private String genre;
 
-    @Column(nullable = false,length = 255)
+    @Column(name = "photo", nullable = false,length = 255)
     private String photo;
 
-    public UUID getId(){return id;}
-    public void setId(UUID id){this.id = id;}
+    @OneToMany
+    @JoinColumn(name = "artist_id",nullable = false)
+    private List<Clubs> clubsList;
 
-    public String getName(){return name;}
-    public void setName(String name){this.name = name;}
-
-    public float getPrice_per_client(){return pricePerClient;}
-    public void setPrice_per_client(float pricePerClient)
-    {
-        this.pricePerClient = pricePerClient;
-    }
-    public String getGenre(){return genre;}
-    public void setGenre(String genre){this.genre = genre;}
-
-    public String getPhoto(){return photo;}
-    public void setPhoto(String photo){this.photo = photo;}
 }
