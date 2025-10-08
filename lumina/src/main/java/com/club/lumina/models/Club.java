@@ -1,4 +1,4 @@
-package models;
+package com.club.lumina.models;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,13 +9,13 @@ import java.util.UUID;
 @Setter
 @Entity
 @Table(name = "Clubs")
-public class Clubs {
+public class Club {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false,updatable = false)
+    @Column(name = "id", nullable = false, updatable = false)
     private UUID id;
 
-    @Column(name = "name", nullable = false,length = 50)
+    @Column(name = "name", nullable = false, length = 50)
     private String name;
 
     @Column(name = "capacity", nullable = false)
@@ -28,17 +28,17 @@ public class Clubs {
     @Column(name = "schedule", nullable = false)
     private String schedule;
 
-    @Column(name = "town", nullable = false,length = 50)
+    @Column(name = "town", nullable = false, length = 50)
     private String town;
 
-    @Column(name = "address", nullable = false,length = 255)
+    @Column(name = "address", nullable = false, length = 255)
     private String address;
 
     @ManyToOne
-    @JoinColumn(name = "artist_id",nullable = false)
-    private Artists artist;
+    @JoinColumn(name = "artist_id", nullable = false)
+    private Artist artist;
     @OneToMany
-    @JoinColumn(name = "club_id",nullable = false)
-    private List<Reservations> reservationsList;
+    @JoinColumn(name = "club_id", nullable = false)
+    private List<Reservation> reservationsList;
 
 }
