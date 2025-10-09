@@ -1,6 +1,7 @@
 package com.club.lumina.services;
 
 import com.club.lumina.models.Artist;
+import com.club.lumina.models.Club;
 import com.club.lumina.repositories.ArtistRepository;
 
 import java.util.List;
@@ -21,6 +22,13 @@ public class ArtistService {
     public Artist getArtistById(UUID id) {
         Optional<Artist> artist = artistRepository.findById(id);
         return artist.orElse(null);
+    }
+
+    public Artist updateArtist(Artist artist) {
+        if(artist.getId() == null) {
+            throw new IllegalArgumentException("Artist id is null");
+        }
+        return artistRepository.saveAndFlush(artist);
     }
 
     public void saveArtist(Artist artist) {
