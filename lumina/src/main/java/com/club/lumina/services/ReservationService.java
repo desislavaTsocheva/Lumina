@@ -3,11 +3,12 @@ package com.club.lumina.services;
 import com.club.lumina.models.Club;
 import com.club.lumina.models.Reservation;
 import com.club.lumina.repositories.ReservationRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-
+@Service
 public class ReservationService {
     private final ReservationRepository reservationRepository;
     public ReservationService(ReservationRepository reservationRepository) {

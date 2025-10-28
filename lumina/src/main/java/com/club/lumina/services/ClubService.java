@@ -1,14 +1,13 @@
 package com.club.lumina.services;
 
-import ch.qos.logback.classic.ViewStatusMessagesServlet;
 import com.club.lumina.models.Club;
 import com.club.lumina.repositories.ClubRepository;
-import org.hibernate.query.NativeQuery;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-
+@Service
 public class ClubService {
     private final ClubRepository clubRepository;
     public ClubService(ClubRepository clubRepository) {

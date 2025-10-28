@@ -1,9 +1,13 @@
 package com.club.lumina.models;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import java.time.LocalDateTime;
 import java.util.UUID;
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 @Entity
@@ -34,9 +38,9 @@ public class Reservation {
 
     @ManyToOne
     @JoinColumn(name = "clients_id")
-    private Client clients;
+    private Client client;
 
     @ManyToOne
     @JoinColumn(name = "club_id")
-    private Club clubs;
+    private Club club;
 }

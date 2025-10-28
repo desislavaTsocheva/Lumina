@@ -1,11 +1,14 @@
 package com.club.lumina.models;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
 import java.util.UUID;
-
+@NoArgsConstructor
+@AllArgsConstructor
 @Setter
 @Getter
 @Entity
@@ -28,8 +31,7 @@ public class Artist {
     @Column(name = "photo", nullable = false, length = 255)
     private String photo;
 
-    @OneToMany
-    @JoinColumn(name = "artist_id", nullable = false)
+    @OneToMany(mappedBy = "artist", cascade = CascadeType.ALL)
     private List<Club> clubsList;
 
 }

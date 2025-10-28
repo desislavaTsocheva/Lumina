@@ -1,13 +1,13 @@
 package com.club.lumina.services;
 
 import com.club.lumina.models.Artist;
-import com.club.lumina.models.Club;
 import com.club.lumina.repositories.ArtistRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-
+@Service
 public class ArtistService {
     private final ArtistRepository artistRepository;
 
