@@ -5,6 +5,7 @@ import com.club.lumina.repositories.ClientRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,9 +14,11 @@ import java.util.UUID;
 @Service
 public class ClientService implements UserDetailsService {
     private final ClientRepository clientRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public ClientService(ClientRepository clientRepository) {
+    public ClientService(ClientRepository clientRepository, PasswordEncoder passwordEncoder) {
         this.clientRepository = clientRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public List<Client> getClients() {
@@ -28,6 +31,7 @@ public class ClientService implements UserDetailsService {
     }
 
     public void addClient(Client client) {
+        client.setPassword(passwordEncoder.encode(client.getPassword()));
         clientRepository.saveAndFlush(client);
     }
 
@@ -46,6 +50,10 @@ public class ClientService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return null;
+        Client client = clientRepository.findByUsername(username);
+        if(client == null) {
+            throw new UsernameNotFoundException(username + " not found!");
+        }
+        return client;
     }
 }

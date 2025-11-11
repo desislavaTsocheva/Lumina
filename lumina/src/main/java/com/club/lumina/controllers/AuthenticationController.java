@@ -22,20 +22,28 @@ public class AuthenticationController {
         this.clientService = clientService;
     }
 
+    @GetMapping(value = "/login")
+    public String showLoginPage(Model model) {
+        return "login";
+    }
+
     @GetMapping("/register")
     public String viewRegister(Model model) {
         model.addAttribute("client", new Client());
         return "register";
     }
+
     @PostMapping(value = "/register", consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE})
     public RedirectView register(@ModelAttribute Client client) {
         boolean isUsernameAvailable = clientService.isUsernameAvailable(client.getUsername());
         boolean isEmailAvailable = clientService.isEmailAvailable(client.getEmail());
+
         if(!isUsernameAvailable || !isEmailAvailable) {
             return new RedirectView("/register");
         }
+
         clientService.addClient(client);
-        return new RedirectView("/");
+        return new RedirectView("/login");
     }
 
 }
