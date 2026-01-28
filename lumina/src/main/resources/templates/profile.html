@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>My Profile</title>
+</head>
+<body>
+<h1>My Profile</h1>
+<a th:href="@{/}">Back to Home</a>
+<hr/>
+
+<h3>Personal Information</h3>
+<ul>
+    <li><strong>Username:</strong> <span th:text="${client.username}">User123</span></li>
+    <li><strong>Full Name:</strong> <span th:text="${client.firstName + ' ' + client.lastName}">John Doe</span></li>
+    <li><strong>Email:</strong> <span th:text="${client.email}">john@example.com</span></li>
+    <li><strong>Phone:</strong> <span th:text="${client.phoneNumber}">0888123456</span></li>
+    <li><strong>Age:</strong> <span th:text="${client.age}">25</span></li>
+    <li><strong>Photo:</strong> <span th:text="${client.photo}">25</span></li>
+</ul>
+<hr/>
+<h3>Update Profile Picture</h3>
+<form th:action="@{/client/profile/upload-photo}" method="post" enctype="multipart/form-data">
+    <input type="file" name="profileImage" accept="image/png, image/jpeg" required />
+    <br/><br/>
+    <button type="submit">Upload New Photo</button>
+</form>
+
+<div style="margin-top: 20px;">
+    <img th:src="${client.photo}" alt="Profile Picture" width="150" height="150" style="border: 2px solid #000;"/>
+</div>
+<hr/>
+
+<h3>My Reservations</h3>
+<table border="1">
+    <thead>
+    <tr>
+        <th>Date</th>
+        <th>Table #</th>
+        <th>People</th>
+        <th>Status</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="res : ${client.getReservationList()}">
+        <td th:text="${res.getDate()}">2026-02-14</td>
+        <td th:text="${res.getTableNumber()}">4</td>
+        <td th:text="${res.getCount()}">2</td>
+        <td th:text="${res.getStatus()}">Confirmed</td>
+    </tr>
+    <tr th:if="${#lists.isEmpty(client.getReservationList())}">
+        <td colspan="4">You have no reservations yet.</td>
+    </tr>
+    </tbody>
+</table>
+
+<br/>
+<form th:action="@{/logout}" method="post">
+    <button type="submit">Logout</button>
+</form>
+
+</body>
+</html>

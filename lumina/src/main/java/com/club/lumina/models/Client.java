@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.Serializable;
@@ -32,7 +33,7 @@ public class Client implements UserDetails {
     @Column(name = "phone_number", nullable = false, length = 10)
     private String phoneNumber;
 
-    @Column(name = "email", nullable = false, length = 255)
+    @Column(name = "email", unique = true, nullable = false, length = 255)
     private String email;
 
     @Column(name = "age", nullable = false)
@@ -41,21 +42,21 @@ public class Client implements UserDetails {
     @Column(name = "password", nullable = false, length = 50)
     private String password;
 
-    @Column(name = "username", nullable = false, length = 50)
+    @Column(name = "username", unique = true, nullable = false, length = 50)
     private String username;
 
     @Column(name = "role", nullable = true, length = 50)
-    private String role;
+    private String role = "CLIENT";
 
     @Column(name = "photo", nullable = true, length = 255)
-    private String photo;
+    private String photo = "https://cdn-icons-png.flaticon.com/512/149/149071.png";
 
     @OneToMany(mappedBy = "client",cascade = CascadeType.ALL)
     private List<Reservation> reservationList;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+        return List.of(new SimpleGrantedAuthority("ROLE_" + this.role));
     }
 
     @Override

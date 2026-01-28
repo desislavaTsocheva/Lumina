@@ -1,10 +1,52 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Lumina</title>
 </head>
 <body>
+
+<h1>Welcome to Lumina Club</h1>
+
+<hr />
+
+<div sec:authorize="isAnonymous()">
+    <p>You are currently browsing as a guest.</p>
+    <ul>
+        <li><a th:href="@{/login}">Login</a></li>
+        <li><a th:href="@{/register}">Register</a></li>
+    </ul>
+</div>
+
+<div sec:authorize="isAuthenticated()">
+    <p>Hello, <span sec:authentication="name">User</span>!</p>
+
+    <div sec:authorize="hasRole('ADMIN')">
+        <p><strong>ADMIN PANEL ACTIVE</strong></p>
+        <ul>
+            <li><a th:href="@{/admin/clients}">Manage Clients</a></li>
+            <li><a th:href="@{/admin/reservations}">Manage Reservations</a></li>
+            <li><a th:href="@{/admin/requests}">Manage Requests</a></li>
+        </ul>
+    </div>
+
+    <div sec:authorize="hasRole('CLIENT')">
+        <p>*** If the user's student request has been accepted => Membership status: Student</p>
+        <ul>
+            <li><a th:href="@{/client/profile}">My Profile</a></li>
+            <li><a th:href="@{/client/bookings}">My Bookings</a></li>
+        </ul>
+    </div>
+
+    <form th:action="@{/logout}" method="post">
+        <button type="submit">Logout</button>
+    </form>
+</div>
+
+<hr />
+<p>Current time: <span th:text="${#calendars.format(#calendars.createNow(), 'dd MMM yyyy HH:mm')}"></span></p>
 
 </body>
 </html>

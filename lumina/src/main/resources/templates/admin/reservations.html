@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>All Reservations - Admin</title>
+</head>
+<body>
+<h1>All Club Reservations</h1>
+<a th:href="@{/admin/clients}">View Clients</a> |
+<a th:href="@{/}">Home</a>
+<hr/>
+
+<table border="1" cellpadding="10">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Client Name</th>
+        <th>Email</th>
+        <th>Date & Time</th>
+        <th>Table Number</th>
+        <th>People Count</th>
+        <th>Status</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="res : ${allReservations}">
+        <td th:text="${res.id}">1</td>
+        <td th:text="${res.client.firstName + ' ' + res.client.lastName}">John Doe</td>
+        <td th:text="${res.client.email}">john@example.com</td>
+        <td th:text="${#temporals.format(res.getDate(), 'dd-MM-yyyy HH:mm')}">28-01-2026 20:00</td>
+        <td th:text="${res.tableNumber}">5</td>
+        <td th:text="${res.getCount()}">4</td>
+        <td>
+                    <span th:text="${res.status}"
+                          th:style="${res.status == 'CONFIRMED' ? 'color: green' : 'color: orange'}">
+                        PENDING
+                    </span>
+        </td>
+        <td>
+            <form th:action="@{/admin/reservations/cancel/{id}(id=${res.id})}" method="post" style="display:inline;">
+                <button type="submit" onclick="return confirm('Cancel this reservation?')">Cancel</button>
+            </form>
+        </td>
+    </tr>
+    <tr th:if="${#lists.isEmpty(allReservations)}">
+        <td colspan="8" style="text-align: center;">No reservations found.</td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

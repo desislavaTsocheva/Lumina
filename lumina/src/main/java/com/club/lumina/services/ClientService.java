@@ -11,6 +11,11 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.nio.file.*;
+import java.io.InputStream;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -63,4 +68,50 @@ public class ClientService implements UserDetailsService {
         }
         return client;
     }
+
+    public void uploadProfilePicture(String username, MultipartFile file) throws IOException {
+        if (file.isEmpty()) {
+            throw new IOException("File is empty!");
+        }
+
+        if (file.getSize() > 2 * 1024 * 1024) {
+            throw new IOException("File is too large! Max 2MB is allowed!");
+        }
+
+        String contentType = file.getContentType();
+        if (contentType == null || !contentType.startsWith("image/")) {
+            throw new IOException("Only image files are allowed!");
+        }
+
+        Client client = clientRepository.findByUsername(username);
+        String oldPhotoPath = client.getPhoto();
+
+        String uploadDir = "src/main/resources/static/images/pfp/";
+        Path uploadPath = Paths.get(uploadDir);
+
+        if (oldPhotoPath != null && oldPhotoPath.startsWith("/images/pfp/")) {
+            Path oldFilePath = Paths.get("src/main/resources/static" + oldPhotoPath);
+            try {
+                Files.deleteIfExists(oldFilePath);
+                System.out.println("Deleted old photo: " + oldFilePath);
+            } catch (IOException e) {
+                System.err.println("Could not delete old file: " + e.getMessage());
+            }
+        }
+
+        String fileName = username + "_" + System.currentTimeMillis() + "_" + file.getOriginalFilename();
+
+        if (!Files.exists(uploadPath)) {
+            Files.createDirectories(uploadPath);
+        }
+
+        try (InputStream inputStream = file.getInputStream()) {
+            Path filePath = uploadPath.resolve(fileName);
+            Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
+        }
+
+        client.setPhoto("/images/pfp/" + fileName);
+        clientRepository.save(client);
+    }
+
 }
