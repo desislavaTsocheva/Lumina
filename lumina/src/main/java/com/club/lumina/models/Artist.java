@@ -28,10 +28,10 @@ public class Artist {
     @Column(name = "genre", nullable = false, length = 50)
     private String genre;
 
-    @Column(name = "photo", nullable = false, length = 255)
+    @Column(name = "photo")
     private String photo;
 
     @OneToMany(mappedBy = "artist", cascade = CascadeType.ALL)
-    private List<Club> clubsList;
+    private List<Event> events;
 
 }

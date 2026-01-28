@@ -32,17 +32,22 @@ public class Club {
     @Column(name = "schedule", nullable = false)
     private String schedule;
 
-    @Column(name = "town", nullable = false, length = 50)
+    @Column(name = "city", nullable = false, length = 50)
     private String town;
 
-    @Column(name = "address", nullable = false, length = 255)
+    @Column(name = "address", nullable = false)
     private String address;
 
-    @ManyToOne
-    @JoinColumn(name = "artist_id", nullable = false)
-    private Artist artist;
+    @Column(name = "latitude", nullable = false)
+    private double latitude;
+
+    @Column(name = "longitude", nullable = false)
+    private double longitude;
+
     @OneToMany(mappedBy = "club", cascade = CascadeType.ALL)
-//    @JoinColumn(mappedBy = "club", nullable = false)
+    private List<Event> events;
+
+    @OneToMany(mappedBy = "club")
     private List<Reservation> reservationsList;
 
 }

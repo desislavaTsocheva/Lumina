@@ -30,9 +30,6 @@ public class Reservation {
     @Column(nullable = false, name = "discount")
     private int discount;
 
-    @Column(nullable = false, name = "table_number")
-    private int tableNumber;
-
     @Column(nullable = false, length = 20, name = "status")
     private String status;
 
@@ -43,4 +40,8 @@ public class Reservation {
     @ManyToOne
     @JoinColumn(name = "club_id")
     private Club club;
+
+    @ManyToOne
+    @JoinColumn(name = "table_id", nullable = false)
+    private ClubTable clubTable;
 }
