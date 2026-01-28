@@ -1,7 +1,10 @@
 package com.club.lumina.services;
 
+import com.club.lumina.dto.ClientRegisterDTO;
 import com.club.lumina.models.Client;
 import com.club.lumina.repositories.ClientRepository;
+import jakarta.validation.Valid;
+import org.modelmapper.ModelMapper;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -15,10 +18,12 @@ import java.util.UUID;
 public class ClientService implements UserDetailsService {
     private final ClientRepository clientRepository;
     private final PasswordEncoder passwordEncoder;
+    private final ModelMapper modelMapper;
 
-    public ClientService(ClientRepository clientRepository, PasswordEncoder passwordEncoder) {
+    public ClientService(ClientRepository clientRepository, PasswordEncoder passwordEncoder, ModelMapper modelMapper) {
         this.clientRepository = clientRepository;
         this.passwordEncoder = passwordEncoder;
+        this.modelMapper = modelMapper;
     }
 
     public List<Client> getClients() {
@@ -30,9 +35,11 @@ public class ClientService implements UserDetailsService {
         return client.orElse(null);
     }
 
-    public void addClient(Client client) {
-        client.setPassword(passwordEncoder.encode(client.getPassword()));
-        clientRepository.saveAndFlush(client);
+    public void addClient(@Valid ClientRegisterDTO clientDTO) {
+        Client entity = modelMapper.map(clientDTO, Client.class);
+        entity.setPassword(passwordEncoder.encode(clientDTO.getPassword()));
+
+        clientRepository.saveAndFlush(entity);
     }
 
     public void deleteClient(UUID id) {

@@ -9,24 +9,31 @@
         <h1>Register</h1>
         <label>First name
             <input th:field="*{firstName}" id="firstName" name="firstName" type="text" placeholder="First Name..."/>
+            <p th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" style="color: red;"></p>
         </label>
         <label>Last name
             <input th:field="*{lastName}" id="lastName" name="lastName" type="text" placeholder="Last Name..."/>
+            <p th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" style="color: red;"></p>
         </label>
         <label>Phone number
             <input th:field="*{phoneNumber}" id="phoneNumber" name="phoneNumber" type="number" placeholder="Phone Number..." minlength="10" maxlength="10"/>
+            <p th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}" style="color: red;"></p>
         </label>
         <label>Email
             <input th:field="*{email}" id="email" name="email" type="email" placeholder="Email..."/>
+            <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" style="color: red;"></p>
         </label>
         <label>Age
             <input th:field="*{age}" id="age" name="age" type="number" placeholder="Age..." min="18" max="100"/>
+            <p th:if="${#fields.hasErrors('age')}" th:errors="*{age}" style="color: red;"></p>
         </label>
         <label>Username
             <input th:field="*{username}" id="username" name="username" type="text" placeholder="Username..."/>
+            <p th:if="${#fields.hasErrors('username')}" th:errors="*{username}" style="color: red;"></p>
         </label>
         <label>Password
             <input th:field="*{password}" id="password" name="password" type="password" placeholder="Password..."/>
+            <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" style="color: red;"></p>
         </label>
         <button type="submit">Register</button>
     </form>
