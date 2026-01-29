@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+  <title>Добави Резервация</title>
+</head>
+<body>
+
+<h1>Нова Резервация</h1>
+
+<form action="/reservations/add" method="POST">
+
+  <label>Дата и час:
+    <input type="datetime-local" name="date" required><br><br>
+  </label><br>
+
+  <label>Брой хора:
+    <input type="number" name="count" min="1" required><br><br>
+  </label><br>
+
+  <label>Тип резервация:
+    <input type="text" name="type" placeholder="напр. Online или VIP"><br><br></label><br>
+
+
+  <label>Процент отстъпка:
+    <input type="number" name="discount" value="0"><br><br></label><br>
+
+  <label>Избери Клиент:
+    <select name="clients_id" required>
+    <option value="">-- Избери човек --</option>
+    <option th:each="c : ${clients}"
+            th:value="${c.id}"
+            th:text="${c.getFirstName() + ' ' + c.getLastName()}"></option>
+    </select><br><br>
+  </label><br>
+
+
+  <label>Избери Клуб:
+    <select name="club_id" required>
+    <option value="">-- Къде ще е партито? --</option>
+    <option th:each="club : ${clubs}"
+            th:value="${club.id}"
+            th:text="${club.name + ' (' + club.getTown() + ')'}"></option>
+    </select><br><br>
+  </label><br>
+  <input type="hidden" name="status" value="Confirmed">
+  <button type="submit">Запази резервация</button>
+</form>
+
+</body>
+</html>

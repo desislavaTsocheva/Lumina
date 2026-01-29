@@ -1,4 +1,4 @@
-package com.club.lumina.controllers; // Провери това!
+package com.club.lumina.controllers;
 
 import org.springframework.web.bind.annotation.*;
 import com.club.lumina.dto.MapMarkerDTO;
