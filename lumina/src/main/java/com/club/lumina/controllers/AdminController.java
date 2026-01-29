@@ -1,10 +1,13 @@
 package com.club.lumina.controllers;
 
+import com.club.lumina.dto.ReservationDTO;
 import com.club.lumina.services.ClientService;
 import com.club.lumina.services.ReservationService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -28,5 +31,10 @@ public class AdminController {
     public String viewAllReservations(Model model) {
         model.addAttribute("allReservations", reservationService.findAll());
         return "admin/reservations";
+    }
+
+    @PostMapping("/reservations/add")
+    public String createReservation(@ModelAttribute ReservationDTO reservationDto) {
+        return "redirect:/success";
     }
 }

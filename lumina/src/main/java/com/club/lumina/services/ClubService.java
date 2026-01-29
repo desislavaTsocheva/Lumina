@@ -49,30 +49,39 @@ public class ClubService {
     }
 
     public List<MapMarkerDTO> getClubsForMap(String genre, String artistName) {
-        List<Event> activeEvents;
+        List<Event> activeEvents = new ArrayList<>();
         if (artistName != null && !artistName.isEmpty()) {
             activeEvents = eventRepository.findAllByArtistNameIgnoreCase(artistName);
         } else if (genre != null && !genre.isEmpty()) {
             activeEvents = eventRepository.findAllByGenreIgnoreCase(genre);
-        } else {
-            activeEvents = eventRepository.findAllByEventDateBetween(LocalDateTime.now(), LocalDateTime.now().plusDays(3));
         }
 
-        return activeEvents.stream()
-                .map(event -> {
-                    Club club = event.getClub();
-                    String status = calculateOccupancy(club.getCapacity(), club.getCount());
+        if (!activeEvents.isEmpty()) {
+            return activeEvents.stream().map(this::convertToDTO).collect(Collectors.toList());
+        }
 
-                    return new MapMarkerDTO(
-                            club.getName(),
-                            club.getLatitude(),
-                            club.getLongitude(),
-                            event.getPromotion(),
-                            event.getArtist().getName(),
-                            status
-                    );
-                })
+        return clubRepository.findAll().stream()
+                .map(club -> new MapMarkerDTO(
+                        club.getName(),
+                        club.getLatitude(),
+                        club.getLongitude(),
+                        "No special promotion",
+                        "TBA",
+                        calculateOccupancy(club.getCapacity(), club.getCount())
+                ))
                 .collect(Collectors.toList());
+    }
+
+    private MapMarkerDTO convertToDTO(Event event) {
+        Club club = event.getClub();
+        return new MapMarkerDTO(
+                club.getName(),
+                club.getLatitude(),
+                club.getLongitude(),
+                event.getPromotion(),
+                event.getArtist().getName(),
+                calculateOccupancy(club.getCapacity(), club.getCount())
+        );
     }
 
     private String calculateOccupancy(int capacity, int currentCount) {

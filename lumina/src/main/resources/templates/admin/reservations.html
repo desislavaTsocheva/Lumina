@@ -29,7 +29,7 @@
         <td th:text="${res.client.firstName + ' ' + res.client.lastName}">John Doe</td>
         <td th:text="${res.client.email}">john@example.com</td>
         <td th:text="${#temporals.format(res.getDate(), 'dd-MM-yyyy HH:mm')}">28-01-2026 20:00</td>
-<!--        <td th:text="${res.tableNumber}">5</td>-->
+        <td th:text="${res.getClubTable()}">5</td>
         <td th:text="${res.getCount()}">4</td>
         <td>
                     <span th:text="${res.status}"
