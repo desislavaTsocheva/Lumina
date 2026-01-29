@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
@@ -24,4 +25,6 @@ public interface EventRepository extends JpaRepository<Event, UUID> {
             "LOWER(e.artist.name) LIKE LOWER(concat('%', :query, '%')) OR " +
             "LOWER(e.genre) LIKE LOWER(concat('%', :query, '%'))")
     List<Event> searchEvents(@Param("query") String query);
+
+    Optional<Event> findFirstByClubOrderByEventDateAsc(Club club);
 }

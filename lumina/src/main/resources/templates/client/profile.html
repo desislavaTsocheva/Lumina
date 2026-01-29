@@ -31,29 +31,6 @@
 </div>
 <hr/>
 
-<h3>My Reservations</h3>
-<table border="1">
-    <thead>
-    <tr>
-        <th>Date</th>
-        <th>Table #</th>
-        <th>People</th>
-        <th>Status</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="res : ${client.getReservationList()}">
-        <td th:text="${res.getDate()}">2026-02-14</td>
-        <td th:text="${res.getTableNumber()}">4</td>
-        <td th:text="${res.getCount()}">2</td>
-        <td th:text="${res.getStatus()}">Confirmed</td>
-    </tr>
-    <tr th:if="${#lists.isEmpty(client.getReservationList())}">
-        <td colspan="4">You have no reservations yet.</td>
-    </tr>
-    </tbody>
-</table>
-
 <br/>
 <form th:action="@{/logout}" method="post">
     <button type="submit">Logout</button>
