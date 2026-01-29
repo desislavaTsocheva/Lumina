@@ -29,7 +29,7 @@
         <td>
             <ul>
                 <li th:each="res : ${client.getReservationList()}"
-                    th:text="${'Date: ' + res.date + ' | Table: ' + res.tableNumber}">
+                    th:text="${'Date: ' + res.date + ' | Table: ' + res.getClubTable()}">
                 </li>
                 <li th:if="${#lists.isEmpty(client.getReservationList())}">No reservations</li>
             </ul>
