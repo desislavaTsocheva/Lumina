@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>My Profile</title>
+</head>
+<body>
+<h1>My Profile</h1>
+<a th:href="@{/}">Back to Home</a>
+<hr/>
+
+<h3>My Reservations</h3>
+<table border="1">
+    <thead>
+    <tr>
+        <th>Date</th>
+        <th>Table #</th>
+        <th>People</th>
+        <th>Status</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="res : ${myReservations}">
+        <td th:text="${res.getDate()}">2026-02-14</td>
+        <td th:text="${res.getClubTable()}">4</td>
+        <td th:text="${res.getCount()}">2</td>
+        <td th:text="${res.getStatus()}">Confirmed</td>
+    </tr>
+    <tr th:if="${#lists.isEmpty(myReservations)}">
+        <td colspan="4">You have no reservations yet.</td>
+    </tr>
+    </tbody>
+</table>
+
+<br/>
+<form th:action="@{/logout}" method="post">
+    <button type="submit">Logout</button>
+</form>
+
+</body>
+</html>

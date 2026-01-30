@@ -1,8 +1,5 @@
 package com.club.lumina.controllers;
 
-import com.club.lumina.models.Club;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import com.club.lumina.dto.MapMarkerDTO;
 import com.club.lumina.services.ClubService;
@@ -23,19 +20,5 @@ public class ClubRestController {
             @RequestParam(required = false) String genre,
             @RequestParam(required = false) String artist) {
         return clubService.getClubsForMap(genre, artist);
-    }
-
-    @GetMapping("/allClubs")
-    public String showClubs(
-            @RequestParam(required = false) String town,
-            @RequestParam(required = false) String genre,
-            Model model) {
-
-        List<Club> clubs = clubService.searchClubs(town, genre);
-        model.addAttribute("clubs", clubs);
-        model.addAttribute("selectedTown", town);
-        model.addAttribute("selectedGenre", genre);
-
-        return "allClubs";
     }
 }

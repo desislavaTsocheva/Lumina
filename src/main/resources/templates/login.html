@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form th:action="@{/login}" method="post" autocomplete="on" novalidate="novalidate">
+    <h1>Login</h1>
+    <label>Username
+        <input id="username" name="username" type="text" placeholder="Username..."/>
+    </label>
+    <label>Password
+        <input id="password" name="password" type="password" placeholder="Password..."/>
+    </label>
+    <div th:if="${param.error}">
+        <p style="color:red;">Invalid username or password</p>
+    </div>
+    <button type="submit">Login</button>
+</form>
+</body>
+</html>

@@ -91,14 +91,4 @@ public class ClubService {
         if (occupancyPercent >= 70) return "ALMOST_FULL";
         return "FREE";
     }
-
-    public List<Club> findAllClubs() {
-        return clubRepository.findAll();
-    }
-
-    public List<Club> searchClubs(String town, String genre) {
-        String townParam = (town != null && !town.isEmpty()) ? town : null;
-        String genreParam = (genre != null && !genre.isEmpty()) ? genre : null;
-        return clubRepository.findByFilters(townParam, genreParam);
-    }
 }

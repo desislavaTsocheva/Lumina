@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Manage clients</title>
+</head>
+<body>
+<h1>All Registered Clients</h1>
+<a th:href="@{/}">Back to Home</a>
+<hr/>
+
+<table border="1">
+    <thead>
+    <tr>
+        <th>Username</th>
+        <th>Full Name</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Reservations</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="client : ${allClients}">
+        <td th:text="${client.username}">Username</td>
+        <td th:text="${client.firstName + ' ' + client.lastName}">Name</td>
+        <td th:text="${client.email}">Email</td>
+        <td th:text="${client.phoneNumber}">Phone</td>
+        <td>
+            <ul>
+                <li th:each="res : ${client.getReservationList()}"
+                    th:text="${'Date: ' + res.date + ' | Table: ' + res.getClubTable()}">
+                </li>
+                <li th:if="${#lists.isEmpty(client.getReservationList())}">No reservations</li>
+            </ul>
+        </td>
+        <td>
+            <form th:action="@{/admin/delete-client/{id}(id=${client.id})}" method="post">
+                <button type="submit" onclick="return confirm('Are you sure?')">Delete</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
