@@ -2,45 +2,71 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Manage clients</title>
+    <title>Customer Management - Admin</title>
 </head>
 <body>
-<h1>All Registered Clients</h1>
-<a th:href="@{/}">Back to Home</a>
+
+<header>
+    <h1>Управление на клиенти</h1>
+    <nav>
+        <a th:href="@{/}"> Начало</a> |
+        <a th:href="@{/admin/reservations}">Всички Резервации</a> |
+        <a th:href="@{/admin/clients/add}" style="font-weight: bold; color: #2e7d32; text-decoration: none; border: 1px solid #2e7d32; padding: 5px 10px; border-radius: 4px;">
+            Регистрирай нов клиент
+        </a>
+    </nav>
+</header>
+
 <hr/>
 
-<table border="1">
-    <thead>
+<table border="1" cellpadding="10" style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+    <thead style="background-color: #f0f0f0;">
     <tr>
-        <th>Username</th>
-        <th>Full Name</th>
-        <th>Email</th>
-        <th>Phone</th>
-        <th>Reservations</th>
-        <th>Actions</th>
+        <th>Име</th>
+        <th>Фамилия</th>
+        <th>Имейл</th>
+        <th>Телефон</th>
+        <th>Брой резервации</th>
+        <th>Действия</th>
     </tr>
     </thead>
     <tbody>
     <tr th:each="client : ${allClients}">
-        <td th:text="${client.username}">Username</td>
-        <td th:text="${client.firstName + ' ' + client.lastName}">Name</td>
-        <td th:text="${client.email}">Email</td>
-        <td th:text="${client.phoneNumber}">Phone</td>
+        <td th:text="${client.firstName}">Иван</td>
+        <td th:text="${client.lastName}">Иванов</td>
+        <td th:text="${client.email}">ivan@example.com</td>
+        <td th:text="${client.phoneNumber}">0888 123 456</td>
         <td>
-            <ul>
-                <li th:each="res : ${client.getReservationList()}"
-                    th:text="${'Date: ' + res.date + ' | Table: ' + res.getClubTable()}">
-                </li>
-                <li th:if="${#lists.isEmpty(client.getReservationList())}">No reservations</li>
-            </ul>
+            <span th:text="${client.getReservationList() != null ? client.getReservationList().size() : 0}">0</span>
         </td>
         <td>
-            <form th:action="@{/admin/delete-client/{id}(id=${client.id})}" method="post">
-                <button type="submit" onclick="return confirm('Are you sure?')">Delete</button>
+            <a th:href="@{/admin/clients/edit/{id}(id=${client.id})}">
+                <button type="button" style="cursor: pointer;">Редактирай профил</button>
+            </a>
+
+            <form th:action="@{/admin/clients/delete/{id}(id=${client.id})}" method="post" style="display:inline;">
+                <button type="submit" style="color: darkred; cursor: pointer;"
+                        onclick="return confirm('ВНИМАНИЕ: Изтриването на клиент може да изтрие и неговите резервации! Продължавате ли?')">
+                    Изтрий
+                </button>
             </form>
+        </td>
+    </tr>
+
+    <tr th:if="${#lists.isEmpty(allClients)}">
+        <td colspan="7" style="text-align: center; padding: 30px; color: #888;">
+            Няма регистрирани клиенти в системата.
         </td>
     </tr>
     </tbody>
 </table>
+
+<footer style="margin-top: 20px;">
+    <p>
+        <strong>Общо клиенти:</strong>
+        <span th:text="${#lists.size(allClients)}">0</span>
+    </p>
+</footer>
+
 </body>
 </html>

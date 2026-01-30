@@ -2,51 +2,74 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>All Reservations - Admin</title>
+    <title>All Reservations</title>
 </head>
 <body>
-<h1>All Club Reservations</h1>
-<a th:href="@{/admin/clients}">View Clients</a> |
-<a th:href="@{/}">Home</a>
+
+<header>
+    <h1>Резервации</h1>
+    <nav>
+        <a th:href="@{/}">Начало</a> |
+        <a th:href="@{/admin/reservations/add}" style="font-weight: bold; color: #2e7d32; text-decoration: none; border: 1px solid #2e7d32; padding: 5px 10px; border-radius: 4px;">
+             Добави нова резервация
+        </a>
+    </nav>
+</header>
+
 <hr/>
 
-<table border="1" cellpadding="10">
-    <thead>
+<table border="1" cellpadding="10" style="width: 100%; border-collapse: collapse;">
+    <thead style="background-color: #f9f9f9;">
     <tr>
-        <th>ID</th>
-        <th>Client Name</th>
-        <th>Email</th>
-        <th>Date & Time</th>
-        <th>Table Number</th>
-        <th>People Count</th>
-        <th>Status</th>
-        <th>Actions</th>
+        <th>Имена</th>
+        <th>Имейл</th>
+        <th>Дата и час</th>
+        <th>№ Маса</th>
+        <th>Брой на хора</th>
+        <th>Статус</th>
+        <th>Действия</th>
     </tr>
     </thead>
     <tbody>
     <tr th:each="res : ${allReservations}">
-        <td th:text="${res.id}">1</td>
         <td th:text="${res.client.firstName + ' ' + res.client.lastName}">John Doe</td>
         <td th:text="${res.client.email}">john@example.com</td>
         <td th:text="${#temporals.format(res.getDate(), 'dd-MM-yyyy HH:mm')}">28-01-2026 20:00</td>
-        <td th:text="${res.getClubTable()}">5</td>
+        <td th:text="${res.getClubTable().getTableNumber()}">5</td>
         <td th:text="${res.getCount()}">4</td>
         <td>
-                    <span th:text="${res.status}"
-                          th:style="${res.status == 'CONFIRMED' ? 'color: green' : 'color: orange'}">
-                        PENDING
-                    </span>
+            <span th:text="${res.status}"
+                  th:style="${res.status == 'Confirmed' ? 'color: green; font-weight: bold;' : 'color: orange; font-weight: bold;'}">
+                PENDING
+            </span>
         </td>
         <td>
-            <form th:action="@{/admin/reservations/cancel/{id}(id=${res.id})}" method="post" style="display:inline;">
-                <button type="submit" onclick="return confirm('Cancel this reservation?')">Cancel</button>
+            <a th:href="@{/admin/reservations/edit/{id}(id=${res.id})}">
+                <button type="button" style="cursor: pointer;">Промени</button>
+            </a>
+
+            <form th:action="@{/admin/reservations/delete/{id}(id=${res.id})}" method="post" style="display:inline;">
+                <button type="submit" style="color: red; cursor: pointer;" onclick="return confirm('Сигурни ли сте, че искате да анулирате тази резервация?')">
+                     Откажи
+                </button>
             </form>
         </td>
     </tr>
+
     <tr th:if="${#lists.isEmpty(allReservations)}">
-        <td colspan="8" style="text-align: center;">No reservations found.</td>
+        <td colspan="8" style="text-align: center; padding: 30px; color: #666;">
+            Няма активни резервации в базата данни.
+        </td>
     </tr>
     </tbody>
 </table>
+
+<footer style="margin-top: 20px;">
+    <p>
+        <strong>Статистика:</strong>
+        Общо <span th:text="${#lists.size(allReservations)}">0</span> записани резервации.
+    </p>
+</footer>
+
 </body>
 </html>

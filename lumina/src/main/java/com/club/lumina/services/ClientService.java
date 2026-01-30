@@ -47,6 +47,18 @@ public class ClientService implements UserDetailsService {
         clientRepository.saveAndFlush(entity);
     }
 
+    public void updateClient(ClientRegisterDTO dto) {
+        Client existingClient = clientRepository.findById(dto.getId()).get();
+
+        existingClient.setFirstName(dto.getFirstName());
+        existingClient.setLastName(dto.getLastName());
+        existingClient.setEmail(dto.getEmail());
+        existingClient.setPhoneNumber(dto.getPhoneNumber());
+        existingClient.setAge(dto.getAge());
+
+        clientRepository.save(existingClient);
+    }
+
     public void deleteClient(UUID id) {
         clientRepository.deleteById(id);
     }

@@ -1,14 +1,12 @@
 package com.club.lumina.controllers;
 
+import com.club.lumina.dto.ClientRegisterDTO;
 import com.club.lumina.models.Client;
 import com.club.lumina.services.ClientService;
 import com.club.lumina.services.ReservationService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -50,4 +48,5 @@ public class ClientController {
         }
         return "redirect:/client/profile";
     }
+
 }

@@ -7,7 +7,10 @@
 
 <h1>Резервация</h1>
 
-<form th:action="${'/admin/reservations/add'}" th:object="${reservation}" method="POST">
+<form th:action="${'/admin/reservations/edit'}" th:object="${reservation}" method="POST">
+
+  <input type="hidden" th:field="*{id}">
+
   <label>Дата и час:
     <input type="datetime-local"
            name="date"

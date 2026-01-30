@@ -14,6 +14,7 @@ import java.util.UUID;
 @Setter
 @Getter
 public class ReservationDTO {
+    private UUID id;
     private LocalDateTime date;
     private Integer count;
     private String type;

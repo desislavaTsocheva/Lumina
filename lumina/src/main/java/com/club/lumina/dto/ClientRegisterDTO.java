@@ -4,9 +4,12 @@ import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.UUID;
+
 @Getter
 @Setter
 public class ClientRegisterDTO {
+    private UUID id;
     @NotBlank(message = "Потребителското име е задължително поле")
     @Size(min = 4, max = 20, message = "Потребителското име трябва да е между 4 и 20 символа")
     private String username;
