@@ -6,8 +6,6 @@ import com.club.lumina.models.Event;
 import com.club.lumina.repositories.ClubRepository;
 import com.club.lumina.repositories.EventRepository;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -100,5 +98,10 @@ public class ClubService {
         String townParam = (town != null && !town.isEmpty()) ? town : null;
         String genreParam = (genre != null && !genre.isEmpty()) ? genre : null;
         return clubRepository.findByFilters(townParam, genreParam);
+    }
+
+    public Club findById(String id) {
+        return clubRepository.findById(UUID.fromString(id))
+                .orElseThrow(() -> new RuntimeException("Club not found with id: " + id));
     }
 }

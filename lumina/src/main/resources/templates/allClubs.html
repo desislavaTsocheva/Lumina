@@ -51,10 +51,10 @@
                     </p>
 
                     <div class="d-flex justify-content-between align-items-center">
-                        <span class="text-dark">
-                             Capacity: <span th:text="${club.capacity}">0</span>
-                        </span>
-                        <a th:href="@{/clubs/{id}(id=${club.id})}" class="btn btn-sm btn-outline-primary">View Events</a>
+                        <span class="text-dark">Capacity: <span th:text="${club.capacity}">0</span></span>
+                        <a th:href="@{/clubs/{id}(id=${club.id})}" class="btn btn-sm btn-outline-primary">
+                            View Events
+                        </a>
                     </div>
                 </div>
             </div>
