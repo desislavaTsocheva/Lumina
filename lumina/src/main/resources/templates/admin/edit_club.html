@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="bg" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Промени клуб</title>
+</head>
+<body>
+
+<h1>Клуб</h1>
+
+<form th:action="${'/admin/clubs/edit'}" th:object="${club}" method="POST">
+  <input type="hidden" th:field="*{id}">
+  <label>Клуб
+    <input type="text" th:field="*{name}" required>
+    <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}" style="color: red;"></p>
+  </label><br>
+
+  <label>Капацитет
+    <input type="text" th:field="*{capacity}" required>
+    <p th:if="${#fields.hasErrors('capacity')}" th:errors="*{capacity}" style="color: red;"></p>
+  </label><br>
+
+  <label>Работно време
+    <input type="text" th:field="*{schedule}">
+    <p th:if="${#fields.hasErrors('schedule')}" th:errors="*{schedule}" style="color: red;"></p>
+  </label><br>
+
+  <label>Град
+    <input type="text" th:field="*{town}" placeholder="Sofia..."/>
+    <p th:if="${#fields.hasErrors('town')}" th:errors="*{town}" style="color: red;"></p>
+  </label><br>
+
+  <label>Адрес
+    <input type="text" th:field="*{address}" min="18" max="100"/>
+    <p th:if="${#fields.hasErrors('address')}" th:errors="*{address}" style="color: red;"></p>
+  </label><br>
+  <button type="submit">Запиши</button>
+</form>
+
+</body>
+</html>

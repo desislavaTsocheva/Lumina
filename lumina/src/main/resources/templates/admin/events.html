@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Event Management</title>
+</head>
+<body>
+
+<header>
+    <h1>Управление на събития</h1>
+    <nav>
+        <a th:href="@{/}"> Начало</a> |
+        <a th:href="@{/admin/events/add}" style="font-weight: bold; color: #2e7d32; text-decoration: none; border: 1px solid #2e7d32; padding: 5px 10px; border-radius: 4px;">
+            Добави ново събитие
+        </a>
+    </nav>
+</header>
+
+<hr/>
+
+<table border="1" cellpadding="10" style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+    <thead style="background-color: #f0f0f0;">
+    <tr>
+        <th>Клуб</th>
+        <th>Изпълнител</th>
+        <th>Жанр</th>
+        <th>Дата</th>
+        <th>Промоция</th>
+        <th>Действия</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="event : ${allEvents}">
+        <td th:text="${event.getClub().getName()}">Клуб</td>
+        <td th:text="${event.getArtist().getName()}">Изпълнител</td>
+        <td th:text="${event.getGenre()}">Жанр</td>
+        <td th:text="${event.getEventDate()}">--</td>
+        <td th:text="${event.getPromotion()}"></td>
+        <td>
+            <a th:href="@{/admin/events/edit/{id}(id=${event.id})}">
+                <button type="button" style="cursor: pointer;">Редактирай</button>
+            </a>
+
+            <form th:action="@{/admin/events/delete/{id}(id=${event.getId()})}" method="post" style="display:inline;">
+                <button type="submit" style="color: darkred; cursor: pointer;"
+                        onclick="return confirm('ВНИМАНИЕ: Изтриването на събитие може да изтрие и неговите атрибути! Продължавате ли?')">
+                    Изтрий
+                </button>
+            </form>
+        </td>
+    </tr>
+
+    <tr th:if="${#lists.isEmpty(allEvents)}">
+        <td colspan="7" style="text-align: center; padding: 30px; color: #888;">
+            Няма регистрирани събития в системата.
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<footer style="margin-top: 20px;">
+    <p>
+        <strong>Общо събития:</strong>
+        <span th:text="${#lists.size(allEvents)}">0</span>
+    </p>
+</footer>
+
+</body>
+</html>

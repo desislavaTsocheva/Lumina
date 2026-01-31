@@ -19,13 +19,15 @@ public class AdminController {
     private final ClubService clubService;
     private final ArtistService artistService;
     private final ClubTableService clubTableService;
+    private final EventService eventService;
 
-    public AdminController(ClientService clientService, ReservationService reservationService, ClubService clubService, ArtistService artistService, ClubTableService clubTableService) {
+    public AdminController(ClientService clientService, ReservationService reservationService, ClubService clubService, ArtistService artistService, ClubTableService clubTableService, EventService eventService) {
         this.clientService = clientService;
         this.reservationService = reservationService;
         this.clubService = clubService;
         this.artistService = artistService;
         this.clubTableService = clubTableService;
+        this.eventService = eventService;
     }
 
     @GetMapping("/clients")
@@ -38,6 +40,18 @@ public class AdminController {
     public String viewAllReservations(Model model) {
         model.addAttribute("allReservations", reservationService.findAll());
         return "admin/reservations";
+    }
+
+    @GetMapping("/clubs")
+    public String viewClubs(Model model) {
+        model.addAttribute("allClubs", clubService.getClubs());
+        return "admin/clubs";
+    }
+
+    @GetMapping("/events")
+    public String viewEvents(Model model) {
+        model.addAttribute("allEvents", eventService.getEvents());
+        return "admin/events";
     }
 
     @PostMapping("/reservations/add")
@@ -72,7 +86,6 @@ public class AdminController {
     @GetMapping("/clients/add")
     public String showAddClient(Model model) {
         model.addAttribute("client", new ClientRegisterDTO());
-
         return "admin/add_client";
     }
 
@@ -137,5 +150,71 @@ public class AdminController {
         return "redirect:/admin/reservations";
     }
 
+    @PostMapping("/clubs/delete/{id}")
+    public String deleteClub(@PathVariable UUID id) {
+        clubService.deleteClub(id);
+        return "redirect:/admin/clubs";
+    }
+
+    @PostMapping("/clubs/add")
+    public String createClub(@ModelAttribute Club club) {
+        clubService.createClub(club);
+        return "redirect:/admin/clubs";
+    }
+
+
+    @GetMapping("/clubs/add")
+    public String showAddClub(Model model) {
+        model.addAttribute("club", new Club());
+        return "admin/add_club";
+    }
+
+    @GetMapping("/clubs/edit/{id}")
+    public String showEditClubForm(@PathVariable UUID id, Model model) {
+        Club club = clubService.getClubById(id);
+        model.addAttribute("club", club);
+        return "admin/edit_club";
+    }
+
+    @PostMapping("/clubs/edit")
+    public String updateClub(@ModelAttribute("club") Club club) {
+        clubService.updateClub(club);
+        return "redirect:/admin/clubs";
+    }
+
+    @PostMapping("/events/delete/{id}")
+    public String deleteEvent(@PathVariable UUID id) {
+        eventService.deleteEvent(id);
+        return "redirect:/admin/events";
+    }
+
+    @PostMapping("/events/add")
+    public String createEvent(@ModelAttribute Event event) {
+        eventService.createEvent(event);
+        return "redirect:/admin/events";
+    }
+
+    @GetMapping("/events/add")
+    public String showAddEvent(Model model) {
+        model.addAttribute("artists", artistService.getAllArtists());
+        model.addAttribute("clubs", clubService.findAllClubs());
+        model.addAttribute("event", new Event());
+        return "admin/add_event";
+    }
+
+    @GetMapping("/events/edit/{id}")
+    public String showEditEventForm(@PathVariable UUID id, Model model) {
+        model.addAttribute("artists", artistService.getAllArtists());
+        model.addAttribute("clubs", clubService.findAllClubs());
+        Event event = eventService.getEventById(id);
+        model.addAttribute("event", event);
+        return "admin/edit_event";
+    }
+
+    @PostMapping("/events/edit")
+    public String updateEvent(@ModelAttribute("event") Event event) {
+        eventService.updateEvent(event);
+        return "redirect:/admin/events";
+    }
 
 }

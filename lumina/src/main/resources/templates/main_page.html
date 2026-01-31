@@ -25,11 +25,13 @@
     <p>Hello, <span sec:authentication="name">User</span>!</p>
 
     <div sec:authorize="hasRole('ADMIN')">
-        <p><strong>ADMIN PANEL ACTIVE</strong></p>
+        <p><strong>Администраторски панел</strong></p>
         <ul>
-            <li><a th:href="@{/admin/clients}">Manage Clients</a></li>
-            <li><a th:href="@{/admin/reservations}">Manage Reservations</a></li>
-            <li><a th:href="@{/admin/requests}">Manage Requests</a></li>
+            <li><a th:href="@{/admin/clients}">Управление на клиенти</a></li>
+            <li><a th:href="@{/admin/reservations}">Управление на резервации</a></li>
+            <li><a th:href="@{/admin/clubs}">Управление на клубове</a></li>
+            <li><a th:href="@{/admin/events}">Управление на събития</a></li>
+            <li><a th:href="@{/admin/requests}">Управление на заявки за карти</a></li>
         </ul>
     </div>
 
