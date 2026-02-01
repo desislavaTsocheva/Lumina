@@ -34,6 +34,17 @@
     <input type="text" th:field="*{address}" min="18" max="100"/>
     <p th:if="${#fields.hasErrors('address')}" th:errors="*{address}" style="color: red;"></p>
   </label><br>
+
+  <label>Ширина координати
+    <input type="text" th:field="*{latitude}" min="18" max="100"/>
+    <p th:if="${#fields.hasErrors('latitude')}" th:errors="*{latitude}" style="color: red;"></p>
+  </label><br>
+
+  <label>Дължина координати
+    <input type="text" th:field="*{longitude}" min="18" max="100"/>
+    <p th:if="${#fields.hasErrors('longitude')}" th:errors="*{longitude}" style="color: red;"></p>
+  </label><br>
+
   <button type="submit">Запиши</button>
 </form>
 

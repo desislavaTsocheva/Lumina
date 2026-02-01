@@ -1,5 +1,6 @@
 package com.club.lumina.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -33,9 +34,11 @@ public class Event {
 
     @ManyToOne
     @JoinColumn(name = "club_id", nullable = false)
+    @JsonIgnore
     private Club club;
 
     @ManyToOne
     @JoinColumn(name = "artist_id")
+    @JsonIgnore
     private Artist artist;
 }

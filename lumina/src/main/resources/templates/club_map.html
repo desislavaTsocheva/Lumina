@@ -8,7 +8,6 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
   <style>
-    /* Оставяме само най-важното за картата, за да работи */
     #map { height: 500px; width: 100%; border: 2px solid #333; }
     body { font-family: sans-serif; margin: 20px; }
     header { margin-bottom: 20px; }
@@ -18,13 +17,12 @@
 <body>
 
 <header>
-  <h1>📍 Нашите Клубове</h1>
+  <h1>Нашите Клубове</h1>
   <p>Разгледайте картата по-долу, за да намерите най-близкия обект до вас.</p>
 </header>
 
-<main>
-  <div id="map"></div>
-</main>
+<input type="text" id="artistSearch" placeholder="Търси артист..." style="width: 100%; padding: 10px; margin-bottom: 10px;">
+<div id="map" style="height: 500px;"></div>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script th:src="@{/js/map.js}"></script>
 </body>
