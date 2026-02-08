@@ -30,7 +30,6 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
-                // 1. Добавете кеш за заявките, за да помни къде сте искали да отидете
                 .requestCache(cache -> cache.requestCache(new HttpSessionRequestCache()))
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
                         .requestMatchers(
@@ -41,8 +40,8 @@ public class SecurityConfiguration {
                                 "/js/**",
                                 "/images/**",
                                 "/error",
-                                "/allClubs", // Трябва да е точно така
-                                "/club_details/" // Трябва да е точно така
+                                "/allClubs",
+                                "/club_details/"
                         ).permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
@@ -51,7 +50,6 @@ public class SecurityConfiguration {
                 .formLogin(form -> form
                         .loginPage("/login")
                         .failureUrl("/login?error")
-                        // 2. Тук е КЛЮЧЪТ: false казва "върни ме там, откъдето дойдох"
                         .defaultSuccessUrl("/", false)
                         .permitAll()
                 )

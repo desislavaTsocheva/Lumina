@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Избор на маса - Карта</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <style>
+        .club-map-container {
+            position: relative;
+            width: 800px;
+            height: 500px;
+            border: 2px solid #333;
+            margin: 30px auto;
+            background-color: #f0f0f0;
+            background-image: url('/images/club_floor_plan.png');
+            background-size: cover;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .map-table {
+            position: absolute;
+            border: 1px solid #666;
+            border-radius: 8px;
+            text-align: center;
+            line-height: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+            transition: all 0.2s ease-in-out;
+        }
+        .map-table.available {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .map-table.occupied {
+            background-color: #f44336;
+            color: white;
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+        .map-table:hover.available {
+            transform: scale(1.05);
+            box-shadow: 3px 3px 8px rgba(0,0,0,0.3);
+        }
+    </style>
+</head>
+<body>
+<div th:replace="~{fragments/header :: header}"></div>
+
+<div class="container">
+    <h1>Резервация за клуб: <span th:text="${clubId}"></span></h1>
+    <h2>Изберете дата и час:</h2>
+
+    <form th:action="@{/select_table/{clubId}(clubId=${clubId})}" method="get">
+        <input type="datetime-local" name="selectedDateTime"
+               th:value="${selectedDateTime != null ? #temporals.format(selectedDateTime, 'yyyy-MM-dd''T''HH:mm') : ''}"
+               onchange="this.form.submit()">
+        <button type="submit" style="display: none;">Обнови</button>
+    </form>
+
+    <h2>Карта на масите за <span th:text="${#temporals.format(selectedDateTime, 'dd-MM-yyyy HH:mm')}"></span></h2>
+
+    <div class="club-map-container">
+        <div th:each="table : ${tables}"
+             th:id="'table-' + ${table.id}"
+             th:classappend="${occupancyMap.get(table.id) ? 'occupied' : 'available'}"
+             class="map-table"
+             th:style="'left:' + ${table.posX} + 'px; top:' + ${table.posY} + 'px; width:' + ${table.width} + 'px; height:' + ${table.height} + 'px;'"
+             th:data-table-id="${table.id}"
+             th:data-is-available="${!occupancyMap.get(table.id)}">
+            Маса <span th:text="${table.tableNumber}"></span> (<span th:text="${table.capacity}"></span>)
+        </div>
+    </div>
+
+    <div id="reservationFormContainer" style="margin-top: 20px; text-align: center;">
+        <h3 id="selectedTableName">Изберете маса от картата</h3>
+        <form id="makeReservationForm" th:action="@{/make_reservation}" method="post" style="display: none;">
+            <input type="hidden" name="clubId" th:value="${clubId}">
+            <input type="hidden" name="tableId" id="formTableId" value="">
+            <input type="hidden" name="reservationTime" th:value="${#temporals.format(selectedDateTime, 'yyyy-MM-dd''T''HH:mm')}">
+            <input type="number" name="numberOfPeople" id="formNumberOfPeople" placeholder="Брой хора" min="1" required>
+            <button type="submit">Направи резервация</button>
+        </form>
+    </div>
+</div>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    document.querySelectorAll('.map-table.available').forEach(tableElement => {
+        tableElement.addEventListener('click', function() {
+            const tableId = this.dataset.tableId;
+            const tableName = this.textContent.trim();
+            const capacity = parseInt(this.textContent.match(/\((\d+)\)/)[1]);
+
+            document.getElementById('selectedTableName').textContent = 'Избрана: ' + tableName;
+            document.getElementById('formTableId').value = tableId;
+            document.getElementById('formNumberOfPeople').max = capacity;
+            document.getElementById('formNumberOfPeople').value = '';
+            document.getElementById('makeReservationForm').style.display = 'block';
+        });
+    });
+    /*]]>*/
+</script>
+</body>
+</html>

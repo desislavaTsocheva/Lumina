@@ -1,14 +1,18 @@
 package com.club.lumina.services;
 
 import com.club.lumina.dto.ReservationDTO;
-import com.club.lumina.models.Club;
+import com.club.lumina.models.Client;
+import com.club.lumina.models.ClubTable;
 import com.club.lumina.models.Reservation;
 import com.club.lumina.repositories.ClientRepository;
 import com.club.lumina.repositories.ClubRepository;
 import com.club.lumina.repositories.ClubTableRepository;
 import com.club.lumina.repositories.ReservationRepository;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -71,4 +75,30 @@ public class ReservationService {
         reservationRepository.deleteById(id);
     }
 
+    // В ReservationService.java
+    public List<UUID> getOccupiedTableIds(UUID clubId, LocalDateTime time) {
+        List<UUID> ids = reservationRepository.findOccupiedTableIdsByClubAndId(clubId, time);
+        return (ids != null) ? ids : new ArrayList<>();
+    }
+
+    public boolean isTableOccupied(UUID tableId, LocalDateTime time) {
+        return reservationRepository.existsByClubTable_IdAndDate(tableId, time);
+    }
+
+    public void createReservation(UUID tableId, LocalDateTime time, int people) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        Client user = clientRepository.findByUsername(username);
+//                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        ClubTable table = tableRepository.findById(tableId)
+                .orElseThrow(() -> new RuntimeException("Table not found"));
+
+        Reservation reservation = new Reservation();
+        reservation.setClubTable(table);
+        reservation.setClient(user);
+        reservation.setDate(time);
+        reservation.setCount(people);
+
+        reservationRepository.save(reservation);
+    }
 }
