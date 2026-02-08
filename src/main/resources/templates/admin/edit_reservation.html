@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+  <title>Резервация</title>
+</head>
+<body>
+
+<h1>Резервация</h1>
+
+<form th:action="${'/admin/reservations/edit'}" th:object="${reservation}" method="POST">
+
+  <input type="hidden" th:field="*{id}">
+
+  <label>Дата и час:
+    <input type="datetime-local"
+           name="date"
+           th:value="${reservation.date}"
+           required>
+  </label>><br>
+
+  <label>Брой хора:
+    <input type="number" th:field="*{count}" min="1" required>
+  </label><br>
+
+  <label>Тип:
+    <input type="text" th:field="*{type}">
+  </label><br>
+
+  <label>Отстъпка:
+    <input type="number" th:field="*{discount}">
+  </label><br>
+
+  <label>Избери Клиент:
+    <select th:field="*{clients_id}" required>
+      <option value="">-- Избери човек --</option>
+      <option th:each="c : ${clients}"
+              th:value="${c.id}"
+              th:text="${c.firstName + ' ' + c.lastName}"></option>
+    </select>
+  </label><br>
+
+  <label>Избери Клуб:
+    <select th:field="*{club_id}" required>
+      <option th:each="club : ${clubs}"
+              th:value="${club.id}"
+              th:text="${club.name}"></option>
+    </select>
+  </label><br>
+
+  <label>Избери Маса:
+    <select th:field="*{table_id}" required>
+      <option th:each="table : ${tables}"
+              th:value="${table.id}"
+              th:text="${table.tableNumber}"></option>
+    </select>
+  </label><br>
+
+  <input type="hidden" th:field="*{status}">
+  <button type="submit">Запази резервация</button>
+</form>
+
+</body>
+</html>

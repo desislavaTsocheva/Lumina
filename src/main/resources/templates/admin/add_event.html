@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="bg" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Добави събитие</title>
+</head>
+<body>
+
+<h1>Ново събитие</h1>
+<form th:action="@{/admin/events/add}" th:object="${event}" method="POST">
+    <input type="hidden" th:field="*{id}">
+
+    <label>Дата на събитието:
+        <input type="datetime-local" th:field="*{eventDate}" required>
+    </label><br>
+
+    <label>Промоция/Описание:
+        <input type="text" th:field="*{promotion}">
+    </label><br>
+
+    <label>Жанр:
+        <input type="text" th:field="*{genre}">
+    </label><br>
+
+    <label>Клуб:
+    <select th:field="*{club}" required>
+        <option value="">-- Избери Клуб --</option>
+        <option th:each="c : ${clubs}"
+                th:value="${c.id}"
+                th:text="${c.name}"></option>
+    </select>
+</label><br>
+
+    <label>Изпълнител:
+        <select th:field="*{artist}">
+            <option value="">Без изпълнител</option>
+            <option th:each="a : ${artists}"
+                    th:value="${a.id}"
+                    th:text="${a.name}"></option>
+        </select>
+    </label><br>
+
+    <button type="submit">Запиши събитие</button>
+</form>
+
+</body>
+</html>

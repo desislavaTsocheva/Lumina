@@ -6,11 +6,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-//@RequestMapping("/club_reservations")
 public class ClubController {
     private final ClubService clubService;
 
@@ -28,14 +26,13 @@ public class ClubController {
         return "allClubs";
     }
 
-    @GetMapping("/club_details/{id}")
+    @GetMapping("/clubs/{id}")
     public String showClubDetails(@PathVariable String id, Model model) {
         try {
             Club club = clubService.findById(id);
             model.addAttribute("club", club);
-            return "club_details";
+            return "club-details";
         } catch (Exception e) {
-            // Правилен редирект към пълния път
             return "redirect:/allClubs";
         }
     }

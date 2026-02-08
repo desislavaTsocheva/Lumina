@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="bg" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Промени клиент</title>
+</head>
+<body>
+
+<h1>Клиент</h1>
+
+<form th:action="${'/admin/clients/edit'}" th:object="${client}" method="POST">
+    <label>Име:
+        <input type="text" th:field="*{firstName}" required>
+        <p th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" style="color: red;"></p>
+    </label><br>
+
+    <label>Фамилия:
+        <input type="text" th:field="*{lastName}" required>
+        <p th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" style="color: red;"></p>
+    </label><br>
+
+    <label>Телефон:
+        <input type="text" th:field="*{phoneNumber}">
+        <p th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}" style="color: red;"></p>
+    </label><br>
+
+    <label>Имейл:
+        <input type="email" th:field="*{email}" placeholder="Email..."/>
+        <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" style="color: red;"></p>
+    </label><br>
+
+    <label>Възраст:
+        <input type="number" th:field="*{age}" min="18" max="100"/>
+        <p th:if="${#fields.hasErrors('age')}" th:errors="*{age}" style="color: red;"></p>
+    </label><br>
+
+    <div th:if="${client.id == null}">
+        <hr>
+        <h3>Системни данни (само за нов клиент)</h3>
+
+        <label>Username:
+            <input type="text" th:field="*{username}" th:required="${client.id == null}"/>
+            <p th:if="${#fields.hasErrors('username')}" th:errors="*{username}" style="color: red;"></p>
+        </label><br>
+
+        <label>Password:
+            <input type="password" th:field="*{password}" th:required="${client.id == null}"/>
+            <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" style="color: red;"></p>
+        </label><br>
+    </div>
+
+    <input type="hidden" th:field="*{id}">
+    <button type="submit">Запиши</button>
+</form>
+
+</body>
+</html>

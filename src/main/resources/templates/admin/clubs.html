@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Club Management</title>
+</head>
+<body>
+
+<header>
+    <h1>Управление на клубове</h1>
+    <nav>
+        <a th:href="@{/}"> Начало</a> |
+        <a th:href="@{/admin/clubs/add}" style="font-weight: bold; color: #2e7d32; text-decoration: none; border: 1px solid #2e7d32; padding: 5px 10px; border-radius: 4px;">
+            Добави нов клуб
+        </a>
+    </nav>
+</header>
+
+<hr/>
+
+<table border="1" cellpadding="10" style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+    <thead style="background-color: #f0f0f0;">
+    <tr>
+        <th>Клуб</th>
+        <th>Град</th>
+        <th>Адрес</th>
+        <th>Работно време</th>
+        <th>Последно събитие</th>
+        <th>Брой резервации</th>
+        <th>Действия</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="club : ${allClubs}">
+        <td th:text="${club.getName()}">Bushido</td>
+        <td th:text="${club.getTown()}">Пловдив</td>
+        <td th:text="${club.getAddress()}">Address</td>
+        <td th:text="${club.getSchedule()}">--</td>
+        <td th:text="${!club.events.isEmpty() ? club.events.getLast().promotion : '--'}"></td>
+        <td>
+            <span th:text="${club.getReservationsList() != null ? club.getReservationsList().size() : 0}">0</span>
+        </td>
+        <td>
+            <a th:href="@{/admin/clubs/edit/{id}(id=${club.id})}">
+                <button type="button" style="cursor: pointer;">Редактирай</button>
+            </a>
+
+            <form th:action="@{/admin/clubs/delete/{id}(id=${club.getId()})}" method="post" style="display:inline;">
+                <button type="submit" style="color: darkred; cursor: pointer;"
+                        onclick="return confirm('ВНИМАНИЕ: Изтриването на клуб може да изтрие и неговите резервации! Продължавате ли?')">
+                    Изтрий
+                </button>
+            </form>
+        </td>
+    </tr>
+
+    <tr th:if="${#lists.isEmpty(allClubs)}">
+        <td colspan="7" style="text-align: center; padding: 30px; color: #888;">
+            Няма регистрирани клубове в системата.
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<footer style="margin-top: 20px;">
+    <p>
+        <strong>Общо клубове:</strong>
+        <span th:text="${#lists.size(allClubs)}">0</span>
+    </p>
+</footer>
+
+</body>
+</html>
